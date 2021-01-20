@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<div class="content-section">
+		<div class="media">
+			<img class="rounded-circle account-img" src="{{ url_for('static', filename='profile_pics/' +	user.image_file) }}">
+			<div class="media-body">
+				<h2 class="account-heading">{{ user.username }}</h2>
+				<p class="text-secondary">{{ user.email }}</p>				
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+

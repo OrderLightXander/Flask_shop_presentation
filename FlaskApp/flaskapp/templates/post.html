@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>{{ post.title }}<h1>
+	<article class="media content-section">
+	  <img class="rounded-circle article-img" src="{{ url_for('static', filename='book_pics/' +	post.image_file) }}">
+	  <div class="media-body">
+	    <div class="article-metadata">
+	    	{% if post.author == current_user or current_user.admin %}
+	    		<a class="btn btn-warning btn-sm float-right" href="{{ url_for('update_post', post_id=post.id) }}">Edit</a>
+	    		<a class="btn btn-danger btn-sm float-right" href="/delete_post/{{ post.id }}" class="btn btn-outline-secondary btn-sm">Delete</a>
+			<a class="btn btn-danger btn-sm- float-right" href="{{ url_for('buy_post', post_id=post.id) }}">Buy</a>
+	    	{% endif %}
+	    	<h3><small class="text-muted">Posted at {{ post.data_posted.strftime('%Y-%m-%d') }}</small></h3>
+	    </div>
+		<h2><p class="article-content">{{ post.content }}</p></h2>
+	    <h3 >Price:<small style='color:red'>{{ post.price }}</small></h3>
+	    <h3 >Author:{{ post.book_author }}</h3>
+	    <h3 class="text-muted">Release date: {{ post.release_date }}</h3>
+	    <h3 class="text-muted">Volume: {{ post.volume }}</h3>
+	    <h3 class="text-muted">Language: {{ post.language }}</h3>
+	    {% if post.user_id %}
+	    	<h2><a class="float-right" href="{{ url_for('user', user_id=post.user_id) }}"><small>Seller: </small> {{ post.author.username }}</a></h2>
+	    {% endif %}
+	    {% if post.fb2_file %}
+	    <a href="{{ url_for('download', filename=post.fb2_file) }}">Download  </a>
+	    {% endif %}
+	  </div>
+	</article>
+	<div>
+		<hr>
+		<h3>Comments</h3>
+		{% if current_user.is_authenticated %}
+	    <form method="POST", action="">
+	      {{ form.hidden_tag() }}
+	      <fieldset class="form-group">
+	        <legend class="border-bottom mb-4">{{ legend }}</legend>
+	        <div class="form-group">
+	        <h5>Place youre own comment</h5>
+	          {% if form.content.errors %}
+	            {{ form.content(class="form-control form-control-lg is-invalid") }}
+	            <div class="invalid-feedback">
+	              {% for error in form.content.errors %}
+	                <span>{{ error }}</span>
+	              {% endfor %}
+	            </div>
+	          {% else %}
+	            {{ form.content(class="form-control form-control-lg") }}
+	          {% endif %}
+	        </div>
+	      </fieldset>
+	        <div class="form-group">
+	          {{ form.submit(class="btn btn-outline-info") }}
+	        </div>
+	    </form>
+	    {% endif %}
+	</div>
+	{% for comment in comments %}
+	<article class="media content-section">
+		<div class="article-metadata">
+		<h5>{{comment.content}}</h5>
+		<h6>{{comment.date_time.strftime('%Y-%h-%d %H:%M:%S')}}</h6>
+		<h6>Posted by {{comment.author}}</h6>
+		{% if post.author == current_user or current_user.admin %}
+		<a href="/delete_comment/{{ comment.id }}" class="btn btn-outline-secondary btn-sm">Delete
+		</a>
+		{% endif %}
+		</div>
+	</article>
+
+		 {% endfor %}
+
+{% endblock content %}

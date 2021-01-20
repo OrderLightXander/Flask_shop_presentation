@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+<style>
+	.alert{
+		background: green;
+		padding: 1rem;
+		border-radius: 5px;
+		color: white;
+	}
+</style>
+
+	<div class="container">
+		<form action="/calc" method="POST">
+			<label for="Number One">First Number</label>
+			<input 
+			type="text"
+			placeholder="First Number"
+			class="u-full-width" 
+			name="num1"
+			>
+
+			<label for="Number Two">Second Number</label>
+			<input 
+			type="text"
+			placeholder="Second Number"
+			class="u-full-width" 
+			name="num2"
+			>
+
+			<label for="Operation">Operation</label>
+			<select class="u-full-width" name="operation">
+				<option value="add">Add</option>
+				<option value="substract">Substract</option>
+				<option value="multiply">Multiply</option>
+				<option value="divide">Divide</option>
+			</select>
+
+			<input type="submit" value="Calculate" id="calc_btn" />
+
+			<div class="alert">Result:   {{ sum }}</div>
+		</form>
+	</div>
+{% endblock content %}
+

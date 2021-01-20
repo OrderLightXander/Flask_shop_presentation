@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<h1>Most Popular Books<h1>
+		<div class="grid-container">
+	{% for post in posts %}
+		{% if post.top %}
+			<div class="grid-item">
+			<article class="media content-section">
+				{% if post.user_id %}
+				{% endif %}
+	  			<div class="media-body">
+				<img class="article-img" src="{{ url_for('static', filename='book_pics/' + post.image_file) }}">
+	    			<div class="article-metadata">
+						{% if post.author == current_user or current_user.admin %}
+	      					<a class="btn btn-warning btn-sm float-right" href="{{ url_for('update_post', post_id=post.id) }}">Edit</a>
+	      					<a class="btn btn-danger btn-sm float-right" href="/delete_post/{{ post.id }}" class="btn btn-outline-secondary btn-sm">Delete</a>
+	    				{% endif %}
+	      				<a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+	      				<h5>
+	      					<small class="text-muted">Author:{{ post.book_author }}</small>
+	      				</h5> 
+	    			</div>
+	    			<h5><details>
+						<summary>Description</summary>
+	    					<h5><p class="article-content">{{ post.content }}</p></h5>
+	   				</details></h5>
+	    			<h5 >Price:<small style='color:red'>{{ post.price }}</small></h5>
+	    			<h5 class="text-muted">Release date: {{ post.release_date }}</h5>
+	    			{% if post.user_id %}
+	    			<h5><a class="float-right" href="{{ url_for('user', user_id=post.user_id) }}"><small>Seller: </small> {{ post.author.username }}</a></h5>
+	    			{% endif %}
+	  			</div>
+			</article>
+			</div>
+		{% endif %}
+	{% endfor %}
+	</div>
+<head>
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 0px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 0px solid rgba(0, 0, 0, 0.8);
+  padding: 0px;
+  font-size: 30px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+{% endblock content %}

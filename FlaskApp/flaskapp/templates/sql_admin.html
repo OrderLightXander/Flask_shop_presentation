@@ -1,0 +1,210 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Database Page</h1>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+  <p>Lorem ipsum dolor sit amet leo. Cras vitae metus. Donec nonummy nunc posuere cubilia Curae, Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur ut venenatis interdum, lacus. Cras a diam. Donec lectus eu tortor. Cum sociis natoque penatibus et malesuada velit suscipit suscipit mauris. Mauris a lorem libero, egestas imperdiet sit amet ipsum. Duis commodo ac, tincidunt rutrum vel, wisi. Phasellus a mi. Suspendisse lectus eget velit. Duis ac quam purus, congue at, consequat nunc. Phasellus lorem eu orci dui, accumsan luctus, pellentesque dui, ultrices iaculis. Curabitur ut justo orci a odio eget felis. Duis blandit quam at porta lorem, pretium wisi, ullamcorper augue, ullamcorper sem in turpis egestas. Mauris neque. Maecenas in faucibus augue. Nam convallis turpis. Donec tempor. Suspendisse ultricies est. Lorem ipsum dolor auctor auctor dignissim. Phasellus lorem dapibus a, volutpat ut, tristique luctus ut, faucibus a, massa. Duis ante sit amet ligula. Aliquam ut aliquet nulla, faucibus orci interdum velit suscipit rutrum. Donec sit amet elit dapibus imperdiet ut, condimentum sagittis vel, luctus et lacus scelerisque urna felis.</p>
+
+<h2>Users Table</h2>
+<details>
+	<summary>expand</summary>
+
+<table>
+  <tr>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Is Admin</th>
+    <th>Actions</th>
+    <th>Wallet</th>
+  </tr>
+ {% for user in users %}
+   <tr>
+    <td>{{ user.username }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.admin }}</td>
+    {% if not user.id == current_user.id %}
+    <td>
+      <form action="{{ url_for('update_user', user_id=user.id) }}" method="POST">
+        <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Switch Role">
+      </form>
+      <form action="{{ url_for('remove_account', user_id=user.id) }}" method="POST">
+        <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Remove User">
+      </form>
+    </td>
+    <td>{{user.wallet}}</td>
+    {% endif %}
+  </tr>
+ {% endfor %}
+</table>
+</details>
+
+<h2>Logs Table</h2>
+<details>
+  <summary>expand</summary>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Date Time</th>
+    <th>Action</th>
+    <th>Table</th>
+    <th>User</th>
+  </tr>
+ {% for log in logs %}
+   <tr>
+    <td>{{ log.id }}</td>
+    <td>{{ log.date_time }}</td>
+    <td>{{ log.action }}</td>
+    <td>{{ log.table }}</td>
+    <td>{{ log.user }}</td>
+  </tr>
+ {% endfor %}
+</table>
+</details>
+
+<h2>Morse Table</h2>
+<details>
+  <summary>expand</summary>
+  <div class="content-section">
+    <form method="POST", action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
+        <div class="form-group">
+          {{ form.crypted.label(class="form-control-label") }}
+          {% if form.crypted.errors %}
+            {{ form.crypted(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.crypted.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.crypted(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.decrypted.label(class="form-control-label") }}
+          {% if form.decrypted.errors %}
+            {{ form.decrypted(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+        wallet = db.Colunm(db.Float, nullable=False, default=0)
+              {% for error in form.decrypted.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.decrypted(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+      </fieldset>
+        <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+  </div>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Crypted</th>
+    <th>Decrypted</th>
+    <th>Actions</th>
+  </tr>
+ {% for m in morse %}
+   <tr>
+    <td>{{ m.id }}</td>
+    <td>{{ m.crypted }}</td>
+    <td>{{ m.decrypted }}</td>
+    <td><a class="btn btn-danger btn-sm float-right" href="/delete_morse/{{ m.id }}" class="btn btn-outline-secondary btn-sm">Delete</a></td>
+  </tr>
+ {% endfor %}
+</table>
+</details>
+
+<h2>Posts Table</h2>
+<details>
+	<summary>expand</summary>
+<table>
+  <tr>
+    <th>Actions</th>
+    <th>ID</th>
+    <th>User</th>
+    <th>Title</th>
+    <th>Date Posted</th>
+    <th>Date Released</th>
+    <th>Language</th>
+    <th>Book Author</th>
+    <th>Price</th>
+    <th>Is Top</th>
+    <th>Users who own this</th>
+    <th>FB2</th>
+  </tr>
+ {% for post in posts %}
+   <tr>
+	   <td><a class="btn btn-danger btn-sm float-right" href="/delete_post/{{ post.id }}" class="btn btn-outline-secondary btn-sm">Delete</a>
+     <a class="btn btn-warning btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Edit</a></td>
+   	<td>{{ post.id }}</td>
+   	<td>{{ post.author.username }}</td>
+    <td>{{ post.title }}</td>
+    <td>{{ post.data_posted }}</td>
+    <td>{{ post.release_date }}</td>
+    <td>{{ post.language }}</td>
+    <td>{{ post.book_author }}</td>
+    <td>{{ post.price }}</td>
+    <td>{{ post.top }}</td>
+    <td>{{ post.owned_users }}</td>
+    <td>{{ post.fb2_file }}</td>
+    </td>
+  </tr>
+ {% endfor %}
+</table>
+</details>
+
+<h2>Comments Table</h2>
+<details>
+  <summary>expand</summary>
+
+<table>
+  <tr>
+    <th>Comment ID</th>
+    <th>Date Time</th>
+    <th>Content</th>
+    <th>Author</th>
+    <th>Post ID</th>
+    <th>Actions</th>
+  </tr>
+ {% for comment in comments %}
+   <tr>
+    <td>{{ comment.id }}</td>
+    <td>{{ comment.date_time }}</td>
+    <td>{{ comment.content }}</td>
+    <td>{{ comment.author }}</td>
+    <td>{{ comment.post }}</td>
+    <td><a class="btn btn-danger btn-sm float-right" href="/delete_comment/{{ comment.id }}" class="btn btn-outline-secondary btn-sm">Delete</a></td>
+  </tr>
+ {% endfor %}
+</table>
+</details>
+
+</body>
+{% endblock content %}
+

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+<style>
+	.alert{
+		background: green;
+		padding: 1rem;
+		border-radius: 5px;
+		color: white;
+	}
+</style>
+	<div class="container">
+		<form action="/mor" method="POST">
+			<label for="Text">Enter text to be Encrypted/Decrypted</label>
+			<input 
+			type="text"
+			placeholder="Enter text to be encrypted/decrypted"
+			class="u-full-width" 
+			name="value"
+			>
+			<label for="Operation">Operation</label>
+			<select class="u-full-width" name="operation">
+				<option value="decrypt">Decrypt</option>
+				<option value="encrypt">Encrypt</option>
+			</select>
+
+			<input type="submit" value="Decrypt/Encrypt" id="calc_btn" />
+
+			<div class="alert">Result:   {{ res }}</div>
+		</form>
+	</div>
+	<h4>Example for Morse code:</h4>
+	<h4>Decrypted: Hello world! my name is Alex, what is yours? </h4>
+	<h4>Encrypted: .... . .-.. .-.. --- / .-- --- .-. .-.. -.. / -- -.-- / -. .- -- . / .. ... / .- .-.. . -..- --..-- / .-- .... .- - / .. ... / -.-- --- ..- .-. ... ..--..</h4>
+{% endblock content %}
+

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>All Books<h1>
+	{% for post in posts %}
+	<article class="media content-section">
+	  {% if post.user_id %}
+	  <img class="article-img" src="{{ url_for('static', filename='book_pics/' + post.image_file) }}">
+	  {% endif %}
+	  <div class="media-body">
+	    <div class="article-metadata">
+			{% if post.author == current_user or current_user.admin %}
+	    		<a class="btn btn-warning btn-sm float-right" href="{{ url_for('update_post', post_id=post.id) }}">Edit</a>
+	    		<a class="btn btn-danger btn-sm float-right" href="/delete_post/{{ post.id }}" class="btn btn-outline-secondary btn-sm">Delete</a>
+	    	{% endif %}
+	      	<a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+	      	<h3><small class="text-muted">Posted at {{ post.data_posted.strftime('%Y-%m-%d') }}</small></h3>
+	    </div>
+	    <details>
+			<summary>Description</summary>
+	    		<h2><p class="article-content">{{ post.content }}</p></h2>
+	    </details>
+	    <h3 >Price:<small style='color:red'>{{ post.price }}</small></h3>
+	    <h3 >Author:{{ post.book_author }}</h3>
+	    <h3 class="text-muted">Release date: {{ post.release_date }}</h3>
+	    <h3 class="text-muted">Volume: {{ post.volume }}</h3>
+	    <h3 class="text-muted">Language: {{ post.language }}</h3>
+	    {% if post.user_id %}
+	    <h2><a class="float-right" href="{{ url_for('user', user_id=post.user_id) }}"><small>Seller: </small> {{ post.author.username }}</a></h2>
+	    {% endif %}
+	  </div>
+	</article>
+	{% endfor %}
+{% endblock content %}
